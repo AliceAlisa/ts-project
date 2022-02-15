@@ -3,6 +3,7 @@ import { renderSearchStubBlock } from './search-results.js'
 import { renderUserBlock } from './user.js'
 import { renderToast } from './lib.js'
 import { myLocalStorage, getUserData, getFavoritesAmount } from './localStorage.js'
+import { getTodosByCount } from './toDo.js'
 
 window.addEventListener('DOMContentLoaded', () => {
 
@@ -13,6 +14,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const checkIn = today.setDate(today.getDate() + 1)
   const checkOut = today.setDate(today.getDate() + 3)
 
+  getTodosByCount(5)
   renderUserBlock(localStorageDataUser[0], localStorageDataUser[1], localStorageDataFavAmount)
   renderSearchFormBlock(checkIn, checkOut)
   submitForm()
