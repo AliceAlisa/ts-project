@@ -15,13 +15,14 @@ export const myLocalStorage = {
     favoritesAmount: 3,
 }
 
-export const getUserData = (value: unknown) => {
+export const getUserData = (value: unknown | undefined) => {
 
     if (value == null) {
         return [value + '']
-    }
-    if (value instanceof User) {
-        return [value.userName, value.userUrl]
+    } else if (value instanceof User) {
+        return value
+    } else {
+        return
     }
 }
 
@@ -29,8 +30,9 @@ export const getFavoritesAmount = (value: unknown) => {
 
     if (value == null) {
         return 0
-    }
-    if (typeof value == 'number') {
+    } else if (typeof value == 'number') {
         return value
+    } else {
+        return
     }
 }

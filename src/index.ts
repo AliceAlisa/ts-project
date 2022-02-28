@@ -2,18 +2,21 @@ import { renderSearchFormBlock, submitForm } from './search-form.js'
 import { renderSearchStubBlock } from './search-results.js'
 import { renderUserBlock } from './user.js'
 import { renderToast } from './lib.js'
-import { myLocalStorage, getUserData, getFavoritesAmount } from './localStorage.js'
+import { myLocalStorage, getUserData, getFavoritesAmount, User } from './localStorage.js'
 
 window.addEventListener('DOMContentLoaded', () => {
 
-  const localStorageDataUser: string[] = getUserData(myLocalStorage.user)
-  const localStorageDataFavAmount: number = getFavoritesAmount(myLocalStorage.favoritesAmount)
+  const localStorageDataUser: User | undefined | string[] = getUserData(myLocalStorage.user)
+  const localStorageDataFavAmount: number | undefined = getFavoritesAmount(myLocalStorage.favoritesAmount)
 
   const today = new Date();
   const checkIn = today.setDate(today.getDate() + 1)
   const checkOut = today.setDate(today.getDate() + 3)
 
-  renderUserBlock(localStorageDataUser[0], localStorageDataUser[1], localStorageDataFavAmount)
+  if (localStorageDataUser instanceof User) {
+    renderUserBlock(localStorageDataUser.userName, localStorageDataUser.userUrl, localStorageDataFavAmount)
+  }
+
   renderSearchFormBlock(checkIn, checkOut)
   submitForm()
   renderSearchStubBlock()

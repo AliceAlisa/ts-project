@@ -73,29 +73,31 @@ export interface SearchFormData {
 
 export const submitForm = () => {
   let form = document.getElementById('check-form')
+  if (form != null) {
+    form.addEventListener('submit', e => {
+      e.preventDefault()
 
-  form.addEventListener('submit', e => {
-    e.preventDefault()
+      let checkin: string = (<HTMLInputElement>document.getElementById('check-in-date')).value
+      let checkout: string = (<HTMLInputElement>document.getElementById('check-out-date')).value
+      let city: string = (<HTMLInputElement>document.getElementById('city')).value
+      let maxPrice: string = (<HTMLInputElement>document.getElementById('max-price')).value
 
-    let checkin: string = (<HTMLInputElement>document.getElementById('check-in-date')).value
-    let checkout: string = (<HTMLInputElement>document.getElementById('check-out-date')).value
-    let city: string = (<HTMLInputElement>document.getElementById('city')).value
-    let maxPrice: string = (<HTMLInputElement>document.getElementById('max-price')).value
+      const checkinDate = new Date(checkin)
+      const checkoutDate = new Date(checkout)
 
-    const checkinDate = new Date(checkin)
-    const checkoutDate = new Date(checkout)
+      if (checkinDate > checkoutDate) {
+        [checkin, checkout] = [checkout, checkin]
+      }
+      let newSearch: SearchFormData = {
+        checkIn: checkin,
+        checkOut: checkout,
+        city: city,
+        maxPrice: !!maxPrice ? maxPrice : '-'
+      }
+      searchForm(newSearch);
+    })
+  }
 
-    if (checkinDate > checkoutDate) {
-      [checkin, checkout] = [checkout, checkin]
-    }
-    let newSearch: SearchFormData = {
-      checkIn: checkin,
-      checkOut: checkout,
-      city: city,
-      maxPrice: !!maxPrice ? maxPrice : '-'
-    }
-    searchForm(newSearch);
-  })
 }
 
 export const searchForm = (form: SearchFormData): void => {
